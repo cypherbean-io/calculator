@@ -11,6 +11,9 @@ document.querySelectorAll('.button').forEach(function(button) {
     switch(buttonValue) {
       case 'C':
         display.textContent = '0';
+        firstNumber = undefined;
+        secondNumber = undefined;
+        operator = undefined;
         break;
       case '=':
         secondNumber = parseInt(display.textContent);
@@ -20,12 +23,26 @@ document.querySelectorAll('.button').forEach(function(button) {
       case '-':
       case '*':
       case '/':
-        firstNumber = parseInt(display.textContent);
-        operator = buttonValue;
-        display.textContent = '0';
-        break;
+        if (operator !== undefined) {
+          secondNumber = parseInt(display.textContent);
+          display.textContent = operate(firstNumber, secondNumber, operator);
+          firstNumber = parseInt(display.textContent);
+          operator = buttonValue;
+          break;
+        }
+        else {
+          firstNumber = parseInt(display.textContent);
+          operator = buttonValue;
+          display.textContent = '0';
+          break;
+        }
       default:
         if (display.textContent === '0') {
+          display.textContent = buttonValue;
+        }
+        else if (secondNumber !== undefined) {
+          firstNumber = parseInt(display.textContent);
+          secondNumber = undefined;
           display.textContent = buttonValue;
         }
         else {
